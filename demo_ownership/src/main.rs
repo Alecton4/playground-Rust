@@ -1,4 +1,5 @@
-// ref: https://www.youtube.com/watch?v=VFIOSWy93H0&list=PLai5B987bZ9CoVR-QEIN9foz4QCJ0H2Y8&index=8
+// ref: https://www.youtube.com/watch?v=VFIOSWy93H0&list=PLai5B987bZ9CoVR-QEIN9foz4QCJ0H2Y8
+
 // !!! ======== ownership rules ========
 // 1. Each value in Rust has a variable that's called its owner
 // 2. There can only be one owner at a time
