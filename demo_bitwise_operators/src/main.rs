@@ -11,7 +11,7 @@ fn main() {
 
     println!("(a ^ b) value is {}", a ^ b);
 
-    println!("(!b) value is {} ", !b);
+    println!("(!b) value is {}", !b);
 
     println!("(a << b) value is {}", a << b);
 
