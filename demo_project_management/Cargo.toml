@@ -1,0 +1,12 @@
+[package]
+name = "demo_project_management"
+version = "0.1.0"
+edition = "2021"
+
+# 1. A package must have at least one crate
+# 2. A package could have either zero library crate or one library crate
+# 3. A package could have any number of binary crates
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
