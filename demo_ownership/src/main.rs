@@ -31,7 +31,7 @@ fn demo_copy_and_move() {
     println!("{}, world", string2);
 
     takes_ownership(string3);
-    // println!("{}", string3); // this cannot be done
+    // println!("{}", string3); // this is not doable
 
     let s1 = gives_ownership();
     let s2 = takes_and_gives_back(s1);
@@ -86,11 +86,12 @@ fn change() {
     println!("{} {}", ref1, ref2);
 
     // ref1 and ref2 are out of scope after println!
+    // So here we can create a mutable reference
     let ref3 = &mut some_string;
     println!("{}", ref3);
 }
 
-// reference that points to nothing
+// NOTE: reference that points to nothing
 // fn dangle() -> &String {
 //     let some_string = String::from("hello");
 //     &some_string

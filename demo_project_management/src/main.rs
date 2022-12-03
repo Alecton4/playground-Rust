@@ -1,4 +1,4 @@
-// ref: https://www.youtube.com/watch?v=5RPXgDQrjio&list=PLai5B987bZ9CoVR-QEIN9foz4QCJ0H2Y8
+// ref: https://www.youtube.com/watch?v=5RPXgDQrjio
 
 fn main() {
     // If you have main.rs defined in the source directory,
