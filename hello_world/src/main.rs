@@ -38,8 +38,10 @@ fn guess_hello() {
     let mut writer = BufWriter::new(stdout.lock());
     let width = message.chars().count();
 
-    say(message.as_bytes(), width, &mut writer).unwrap(); // !!! The BufWriter is buffering it and will only actually perform the write when it's dropped, at the very end of the function
-    println!("Good Bye!") // Thus this is printed first
+    // !!! The BufWriter is buffering it and will only actually perform the write when it's dropped, at the very end of the function
+    say(message.as_str(), width, &mut writer).unwrap();
+    // Thus this is printed first
+    println!("Good Bye!")
 }
 
 fn guess_number() {
