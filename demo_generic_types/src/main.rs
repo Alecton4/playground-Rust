@@ -21,8 +21,6 @@ fn main() {
     println!("{}", p5.get_x());
 }
 
-fn demo_find_largest() {}
-
 // This function can only handle i32 vector
 fn get_largest(number_list: Vec<i32>) -> i32 {
     let mut largest = number_list[0];
@@ -34,6 +32,7 @@ fn get_largest(number_list: Vec<i32>) -> i32 {
     largest
 }
 
+// This func can handle all types of vectors which have "PartialOrd + Copy" traits
 fn get_largest_generic<Type: PartialOrd + Copy>(list: Vec<Type>) -> Type {
     let mut largest = list[0];
     for number in list {
@@ -57,6 +56,7 @@ impl<X, Y> Point<X, Y> {
 }
 
 impl Point<f64, f64> {
+    // NOTE: get_y is only implemented for f64 points
     fn get_y(&self) -> f64 {
         self.y
     }

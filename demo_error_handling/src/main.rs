@@ -6,8 +6,8 @@ use std::io::ErrorKind;
 use std::io::Read;
 
 fn main() {
-    // demo_panic_macro();
-    // demo_recoverable_errors();
+    demo_panic_macro();
+    demo_recoverable_errors();
     demo_unwrap();
 }
 

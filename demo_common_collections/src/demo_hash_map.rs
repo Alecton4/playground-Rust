@@ -37,9 +37,10 @@ pub fn demo_hash_map_update_2() {
     let mut map = HashMap::new();
 
     for word in text.split_whitespace() {
-        let mut count = map.entry(word).or_insert(0);
-        // ??? why the following is wrong
+        let count = map.entry(word).or_insert(0);
+        // ??? The following wrong.
         // let mut count = map.entry(&word).or_insert(0);
+        // ??? count is mutable.
         *count += 1;
     }
 
