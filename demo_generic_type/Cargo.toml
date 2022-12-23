@@ -1,5 +1,5 @@
 [package]
-name = "demo_generic_types"
+name = "demo_generic_type"
 version = "0.1.0"
 edition = "2021"
 
