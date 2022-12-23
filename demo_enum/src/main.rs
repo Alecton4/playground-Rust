@@ -1,4 +1,4 @@
-// ref: https://www.youtube.com/watch?v=DSZqIJhkNCM&list=PLai5B987bZ9CoVR-QEIN9foz4QCJ0H2Y8
+// REF: https://www.youtube.com/watch?v=DSZqIJhkNCM&list=PLai5B987bZ9CoVR-QEIN9foz4QCJ0H2Y8
 
 enum IpAddrKind {
     V4(u8, u8, u8, u8),

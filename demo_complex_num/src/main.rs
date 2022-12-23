@@ -1,4 +1,4 @@
-// ref: https://course.rs/basic/base-type/numbers.html#%E6%9C%89%E7%90%86%E6%95%B0%E5%92%8C%E5%A4%8D%E6%95%B0
+// REF: https://course.rs/basic/base-type/numbers.html#%E6%9C%89%E7%90%86%E6%95%B0%E5%92%8C%E5%A4%8D%E6%95%B0
 
 use num::complex::Complex;
 

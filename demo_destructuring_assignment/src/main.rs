@@ -1,4 +1,4 @@
-// ref: https://course.rs/basic/variable.html#%E8%A7%A3%E6%9E%84%E5%BC%8F%E8%B5%8B%E5%80%BC
+// REF: https://course.rs/basic/variable.html#%E8%A7%A3%E6%9E%84%E5%BC%8F%E8%B5%8B%E5%80%BC
 
 fn main() {
     let (a, b, c, d, e);

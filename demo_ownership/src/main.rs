@@ -1,4 +1,4 @@
-// ref: https://www.youtube.com/watch?v=VFIOSWy93H0&list=PLai5B987bZ9CoVR-QEIN9foz4QCJ0H2Y8
+// REF: https://www.youtube.com/watch?v=VFIOSWy93H0&list=PLai5B987bZ9CoVR-QEIN9foz4QCJ0H2Y8
 
 // !!! ======== ownership rules ========
 // 1. Each value in Rust has a variable that's called its owner
@@ -62,6 +62,12 @@ fn takes_and_gives_back(some_string: String) -> String {
 //    (to a particular data in a particular scope at any given time ),
 // 3. References must always be valid
 
+fn demo_reference() {
+    let r;
+    let x = 8964;
+    r = &x; // You can reference primitive values like here
+}
+
 // We do not want to take the ownership of a string.
 // So we first take it then return it back.
 // But this is tedious.
@@ -91,13 +97,13 @@ fn change() {
     println!("{}", ref3);
 }
 
-// NOTE: reference that points to nothing
+// NOTE: Reference that points to nothing.
 // fn dangle() -> &String {
 //     let some_string = String::from("hello");
 //     &some_string
 // }
 
-// return the index to the end of the first word
+// Return the index to the end of the first word
 fn first_word_without_slice(some_string: &String) -> usize {
     let bytes = some_string.as_bytes();
     for (i, &item) in bytes.iter().enumerate() {
@@ -109,7 +115,7 @@ fn first_word_without_slice(some_string: &String) -> usize {
     some_string.len()
 }
 
-// slices let you reference a contiguous sequence of elements within a collection instead of referencing the entire collection
+// Slices let you reference a contiguous sequence of elements within a collection instead of referencing the entire collection
 fn first_word_with_slice(some_string: &String) -> &str {
     let bytes = some_string.as_bytes();
     for (i, &item) in bytes.iter().enumerate() {

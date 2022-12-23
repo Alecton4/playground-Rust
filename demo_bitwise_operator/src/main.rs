@@ -1,4 +1,4 @@
-// ref: https://course.rs/basic/base-type/numbers.html#%E4%BD%8D%E8%BF%90%E7%AE%97
+// REF: https://course.rs/basic/base-type/numbers.html#%E4%BD%8D%E8%BF%90%E7%AE%97
 
 fn main() {
     // 二进制为00000010
