@@ -1,4 +1,5 @@
-// REF: https://www.youtube.com/watch?v=DSZqIJhkNCM&list=PLai5B987bZ9CoVR-QEIN9foz4QCJ0H2Y8
+// REF: https://www.youtube.com/watch?v=DSZqIJhkNCM
+// TODO: Review
 
 enum IpAddrKind {
     V4(u8, u8, u8, u8),
@@ -27,7 +28,7 @@ fn main() {
 fn demo_Option() {
     let some_num = Some(8964);
     let some_str = Some("rust");
-    // !!! type annotations needed because None is used
+    // !!! Type annotations needed because None is used.
     let absent_num: Option<i32> = None;
 }
 
@@ -46,14 +47,16 @@ fn demo_match(some_int: Option<i32>) -> Option<i32> {
 }
 
 fn demo_if_let() {
-    let some_value = Some(3);
+    let a = 8964;
+    let some_value = Some(a);
 
     match some_value {
-        Some(3) => println!("three"),
+        Some(8964) => println!("three"),
         _ => (),
     }
 
-    if let Some(3) = some_value {
+    // NOTE: Useful when we only care about one variant
+    if let Some(8964) = some_value {
         println!("three")
     }
 }

@@ -5,44 +5,44 @@ pub fn demo_string_basics() {
     // REF: https://stackoverflow.com/questions/49393462/what-does-str-does-not-have-a-constant-size-known-at-compile-time-mean-and
     // Strings are stored as a collection of UTF-8 encoded bytes
     let s1 = String::new();
-    let s2 = "initial contents"; // define a string slice
-    let s3 = s2.to_string(); // turn a string slice into an own String
-    let s4 = String::from("initial contents"); // create an own String from a string slice
+    let s2 = "initial contents"; // Define a string slice.
+    let s3 = s2.to_string(); // Turn a string slice into an owned String.
+    let s4 = String::from("initial contents"); // Create an owned String from a string slice.
 }
 
 pub fn demo_string_append() {
     let mut s = String::from("foo");
-    // append str using push_str
+    // Append str using "push_str()".
     s.push_str("bar");
-    // append char using push
+    // Append char using "push()".
     s.push('!');
 
     let s1 = String::from("hello, ");
     let s2 = String::from("world");
 
-    // concatenate using format
-    let s3 = format!("{}{}", s1, s2); // NOTE: format! does not take the ownership of s1 and s2
+    // Concatenate using "format!".
+    let s3 = format!("{}{}", s1, s2); // NOTE: "format!" does not take the ownership of s1 and s2.
 
-    // concatenate using +
-    let s4 = s1 + &s2; // NOTE: take the ownership of s1 and concatenate
+    // Concatenate using "+".
+    let s4 = s1 + &s2; // !!!: Take the ownership of s1 and concatenate.
 }
 
 pub fn demo_string_index() {
     let hello = String::from("hello");
-    // This is not doable because some characters might be more than one byte
+    // NOTE: This is not doable because some characters might be more than one byte.
     // let c = hello[0];
 
-    // byte
+    // Byte
     for b in "नमस्ते".bytes() {
         println!("{}", b);
     }
 
-    // scaler value
+    // Scaler value
     for c in "नमस्ते".chars() {
         println!("{}", c);
     }
 
-    // grapheme value
+    // Grapheme value
     for g in "नमस्ते".graphemes(true) {
         println!("{}", g);
     }

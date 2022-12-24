@@ -18,7 +18,7 @@ fn main() {
 
     println!("(a >> b) value is {}", a >> b);
 
-    // variable shadowing
+    // Variable shadowing
     let mut a = a;
     // 注意这些计算符除了!之外都可以加上=进行赋值 (因为!=要用来判断不等于)
     a <<= b;

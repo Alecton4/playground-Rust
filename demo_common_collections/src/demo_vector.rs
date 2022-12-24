@@ -32,12 +32,12 @@ pub fn demo_element_accessing() {
 pub fn demo_iterating_elements() {
     let mut v = vec![1, 2, 3, 4, 5];
 
-    // take immutable reference
+    // Take immutable reference
     for i in &v {
         println!("{}", i);
     }
 
-    // take mutable reference
+    // Take mutable reference
     for i in &mut v {
         *i += 50; // ??? We need to dereference here
         println!("{}", i);
@@ -45,9 +45,8 @@ pub fn demo_iterating_elements() {
 }
 
 pub fn demo_store_enum_into_vec() {
-    // use the vector to store different types of data,
-    // i.e. a row of cells in a spreadsheet
-    // each cell could store either an integer a floating point number or a string
+    // Use the vector to store different types of data, i.e. a row of cells in a spreadsheet.
+    // Each cell could store either an integer a floating point number or a string.
     enum SpreadsheetCell {
         Int(i32),
         Float(f64),
