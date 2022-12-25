@@ -58,7 +58,19 @@ struct ImportantExpert<'a> {
 
 impl<'a> ImportantExpert<'a> {
     // The 3rd rule applies here.
-    fn return_part(&self, announcement: &str) -> &str {
+    fn announce_and_return_part(&self, announcement: &str) -> &str {
+        println!("Attention please: {}", announcement);
+        self.part
+    }
+
+    fn announce_and_return_part_2<'b>(&'a self, announcement: &'b str) -> &'b str
+    where
+        // NOTE: The following means 'a is not less than 'b.
+        // Without this the program cannot compile
+        // because "self.part" has 'a and "&'b str" has 'b.
+        // The compiler needs to know the relationship between 'a and 'b.
+        'a: 'b,
+    {
         println!("Attention please: {}", announcement);
         self.part
     }
@@ -67,6 +79,7 @@ impl<'a> ImportantExpert<'a> {
 // NOTE: Static lifetime means that the reference could live as long as the duration of the program.
 // All the string literals have static lifetime.
 
+// The following example combines generic, trait, and lifetime.
 fn demo_generic_trait_lifetime<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str
 where
     T: Display,
