@@ -1,5 +1,6 @@
 // REF: https://www.youtube.com/watch?v=XYkiwsplDTg
 // REF: https://www.youtube.com/watch?v=AABHxixn6Cw
+// REF: https://www.youtube.com/watch?v=rb63xJEjaZU
 
 use std::env; // To take user args.
 use std::process; //To exit program without panic.
@@ -7,8 +8,8 @@ use std::process; //To exit program without panic.
 use minigrep::{run, Config};
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    let config = Config::new(&args).unwrap_or_else(|err| {
+    // let args: Vec<String> = env::args().collect();
+    let config = Config::new(env::args()).unwrap_or_else(|err| {
         // Use of closure
         eprintln!("Problem parsing args: {}", err);
         process::exit(1);
