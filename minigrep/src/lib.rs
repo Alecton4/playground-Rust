@@ -59,7 +59,7 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(mut args: env::Args) -> Result<Config, &'static str> {
+    pub fn new(args: env::Args) -> Result<Config, &'static str> {
         // NOTE: Panic is more appropriate for programming errors rather than usage errors
         // if args.len() < 3 {
         //     panic!("Not enough arguments!");
