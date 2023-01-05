@@ -1,11 +1,19 @@
+# REF: https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html
+
+# 1. A package must have at least one crate.
+# 2. A package could have either zero library crate or one library crate.
+# 3. A package could have any number of binary crates.
+
+# If a package contains src/main.rs and src/lib.rs,
+# it has two crates: a binary and a library,
+# both with the same name as the package.
+# A package can have multiple binary crates by placing files in the src/bin directory:
+# each file will be a separate binary crate.
+
 [package]
 name = "demo_project_management"
 version = "0.1.0"
 edition = "2021"
-
-# 1. A package must have at least one crate
-# 2. A package could have either zero library crate or one library crate
-# 3. A package could have any number of binary crates
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
