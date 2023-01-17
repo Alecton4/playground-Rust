@@ -14,4 +14,5 @@ fn main() {
     demo_trait_drop::demo_early_drop();
     demo_reference_counting::demo_rc();
     demo_reference_counting::demo_rc_2();
+    demo_refcell::demo_combine_rc_and_refcell();
 }
