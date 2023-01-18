@@ -7,8 +7,8 @@ use std::{
 };
 
 fn main() {
-    // greet_world();
-    // guess_hello();
+    greet_world();
+    guess_hello();
     guess_number();
 }
 

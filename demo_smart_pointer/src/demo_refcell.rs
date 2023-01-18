@@ -85,6 +85,7 @@ mod tests {
 }
 
 // NOTE: Having Multiple Owners of Mutable Data by Combining Rc<T> and RefCell<T>
+// NOTE: review
 #[derive(Debug)]
 enum List {
     Cons(Rc<RefCell<i32>>, Rc<List>),
