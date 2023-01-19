@@ -17,5 +17,6 @@ fn main() {
     demo_reference_counting::demo_rc();
     demo_reference_counting::demo_rc_2();
     demo_refcell::demo_combine_rc_and_refcell();
+    demo_refcell::demo_combine_rc_and_refcell_2();
     demo_reference_cycle::demo_cycle();
 }
