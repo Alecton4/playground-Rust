@@ -92,17 +92,16 @@ enum List {
     Nil,
 }
 
-use crate::demo_refcell::List::{Cons, Nil};
 use std::cell::RefCell;
 use std::rc::Rc;
 
 pub fn demo_combine_rc_and_refcell() {
     let value = Rc::new(RefCell::new(5));
 
-    let a = Rc::new(Cons(Rc::clone(&value), Rc::new(Nil)));
+    let a = Rc::new(List::Cons(Rc::clone(&value), Rc::new(List::Nil)));
 
-    let b = Cons(Rc::new(RefCell::new(3)), Rc::clone(&a));
-    let c = Cons(Rc::new(RefCell::new(4)), Rc::clone(&a));
+    let b = List::Cons(Rc::new(RefCell::new(3)), Rc::clone(&a));
+    let c = List::Cons(Rc::new(RefCell::new(4)), Rc::clone(&a));
 
     *value.borrow_mut() += 10;
 

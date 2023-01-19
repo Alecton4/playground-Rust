@@ -5,6 +5,7 @@ mod demo_refcell;
 mod demo_reference_counting;
 mod demo_trait_deref;
 mod demo_trait_drop;
+mod demo_reference_cycle;
 
 fn main() {
     demo_box::demo_box_basics();
@@ -16,4 +17,5 @@ fn main() {
     demo_reference_counting::demo_rc();
     demo_reference_counting::demo_rc_2();
     demo_refcell::demo_combine_rc_and_refcell();
+    demo_reference_cycle::demo_cycle();
 }
