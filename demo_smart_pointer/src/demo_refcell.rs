@@ -86,25 +86,56 @@ mod tests {
 
 // NOTE: Having Multiple Owners of Mutable Data by Combining Rc<T> and RefCell<T>
 // NOTE: review
+use std::cell::RefCell;
+use std::rc::Rc;
+
 #[derive(Debug)]
 enum List {
     Cons(Rc<RefCell<i32>>, Rc<List>),
     Nil,
 }
 
-use crate::demo_refcell::List::{Cons, Nil};
-use std::cell::RefCell;
-use std::rc::Rc;
-
 pub fn demo_combine_rc_and_refcell() {
     let value = Rc::new(RefCell::new(5));
 
-    let a = Rc::new(Cons(Rc::clone(&value), Rc::new(Nil)));
+    let a = List::Cons(Rc::clone(&value), Rc::new(List::Nil));
+    let a_rc = Rc::new(a);
 
-    let b = Cons(Rc::new(RefCell::new(3)), Rc::clone(&a));
-    let c = Cons(Rc::new(RefCell::new(4)), Rc::clone(&a));
+    let b = List::Cons(Rc::new(RefCell::new(3)), Rc::clone(&a_rc));
+    let c = List::Cons(Rc::new(RefCell::new(4)), Rc::clone(&a_rc));
 
     *value.borrow_mut() += 10;
+
+    println!("a after = {:?}", a_rc);
+    println!("b after = {:?}", b);
+    println!("c after = {:?}", c);
+}
+
+#[derive(Debug)]
+enum List2 {
+    Cons(Rc<RefCell<i32>>, RefCell<Rc<List2>>),
+    Nil,
+}
+
+pub fn demo_combine_rc_and_refcell_2() {
+    let value = Rc::new(RefCell::new(5));
+
+    let a = List2::Cons(Rc::clone(&value), RefCell::new(Rc::new(List2::Nil)));
+    let a = Rc::new(a);
+    let b = List2::Cons(Rc::new(RefCell::new(3)), RefCell::new(Rc::clone(&a)));
+    let b = Rc::new(b);
+    let c = List2::Cons(Rc::new(RefCell::new(4)), RefCell::new(Rc::clone(&a)));
+    let c = Rc::new(c);
+    println!("c init = {:?}", c);
+
+    *value.borrow_mut() += 10;
+
+    if let List2::Cons(.., next) = &*c {
+        // REF: https://doc.rust-lang.org/reference/expressions.html#expression-precedence
+        let mut temp = next.borrow_mut(); // Same as (*next).borrow_mut()
+        println!("c's next = {:?}", temp);
+        *temp = Rc::clone(&b);
+    }
 
     println!("a after = {:?}", a);
     println!("b after = {:?}", b);
