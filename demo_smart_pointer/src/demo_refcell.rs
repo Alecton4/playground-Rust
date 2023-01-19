@@ -85,7 +85,7 @@ mod tests {
 }
 
 // NOTE: Having Multiple Owners of Mutable Data by Combining Rc<T> and RefCell<T>
-// NOTE: review
+// TODO: review
 use std::cell::RefCell;
 use std::rc::Rc;
 

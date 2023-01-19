@@ -53,9 +53,15 @@ where
     // Fn: Immutably borrow values.
     // FnMut: Mutably borrow values.
     // FnOnce: Take ownership of the variables inside the closure environment.
-    // ??? Fn trait has FnMut as a supertrait, and FnMut has FnOnce as a supertrait.
-    // That means that Fn has all functionalities of Fn+FnMut+FnOnce, FnMut has functionalities of FnMut+FnOnce, and FnOnce only has FnOnce.
-    // Fn can do immutable, mutable, and capture. FnMut can only do mutable and capture. And FnOnce can only capture.
+    // TODO: review
+    // Fn trait has FnMut as a supertrait,
+    // and FnMut has FnOnce as a supertrait.
+    // That means that Fn has all functionalities of Fn+FnMut+FnOnce,
+    // FnMut has functionalities of FnMut+FnOnce,
+    // and FnOnce only has FnOnce.
+    // Fn can do immutable, mutable, and capture.
+    // FnMut can only do mutable and capture.
+    // And FnOnce can only capture.
     T: Fn(u32) -> u32,
 {
     expensive_calculation: T,

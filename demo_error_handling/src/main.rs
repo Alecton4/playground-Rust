@@ -11,7 +11,7 @@ fn main() {
     demo_recoverable_errors_2();
     demo_unwrap();
     demo_expect();
-    // NOTE: review
+    // TODO: review
     demo_error_propagation();
     demo_error_propagation_2();
     demo_error_propagation_3();

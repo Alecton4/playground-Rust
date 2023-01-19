@@ -15,7 +15,7 @@ enum List {
     Nil,
 }
 
-use crate::demo_box::List::{Cons, Nil}; // NOTE: review
+use crate::demo_box::List::{Cons, Nil};
 
 pub fn demo_list_using_box() {
     let list = Cons(1, Box::new(Cons(2, Box::new(Cons(3, Box::new(Nil))))));
