@@ -23,6 +23,11 @@ impl Message {
 fn main() {
     let four = IpAddrKind::V4(127, 0, 0, 1);
     let six = IpAddrKind::V6;
+
+    demo_Option();
+    demo_unwrap();
+    demo_match(Some(8964));
+    demo_if_let();
 }
 
 fn demo_Option() {

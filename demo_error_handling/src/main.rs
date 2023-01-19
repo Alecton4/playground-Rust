@@ -8,7 +8,14 @@ use std::io::Read;
 fn main() {
     demo_panic_macro();
     demo_recoverable_errors();
+    demo_recoverable_errors_2();
     demo_unwrap();
+    demo_expect();
+    // NOTE: review
+    demo_error_propagation();
+    demo_error_propagation_2();
+    demo_error_propagation_3();
+    demo_error_propagation_4();
 }
 
 fn demo_panic_macro() {
