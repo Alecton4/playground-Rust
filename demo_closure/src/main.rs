@@ -114,15 +114,17 @@ fn generate_workout_using_closure(intensity: u32, random_number: u32) {
 
 // Capture the environment with closure
 fn demo_cap_env() {
-    let x = 4;
-    let equal_to_x = |z| {
-        // "x" is defined outside the closure but can be accessed
-        // because "x" and this closure are defined within the same scope.
-        z == x
-    };
-    // NOTE: The following closure will take ownership of "x".
-    // let equal_to_x = move |z| z == x;
-    let y = 4;
+    let x = vec![1, 2, 3];
 
+    // "x" is defined outside the closure but can be accessed
+    // because "x" and this closure are defined within the same scope.
+    let equal_to_x = |z| z == x;
+    let y = vec![1, 2, 3];
+    assert!(equal_to_x(y));
+
+    // NOTE: The following closure will take ownership of "x".
+    // Both this one and the above one will take ownership of "y".
+    let equal_to_x = move |z| z == x;
+    let y = vec![1, 2, 3];
     assert!(equal_to_x(y));
 }
