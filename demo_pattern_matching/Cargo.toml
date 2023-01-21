@@ -1,5 +1,5 @@
 [package]
-name = "demo_destructuring_assignment"
+name = "demo_pattern_matching"
 version = "0.1.0"
 edition = "2021"
 
