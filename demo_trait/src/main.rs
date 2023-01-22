@@ -1,4 +1,9 @@
 // REF: https://www.youtube.com/watch?v=T0Xfltu4h3A
+// REF: https://doc.rust-lang.org/book/ch10-02-traits.html
+
+// NOTE: There is a property called coherence, and more specifically the orphan rule, so named because the parent type is not present:
+// We’re only allowed to implement a trait on a type if either the trait or the type are local to our crate.
+// This rule ensures that other people’s code can’t break your code and vice versa.
 
 use std::fmt::{Debug, Display};
 
