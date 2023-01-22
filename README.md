@@ -6,6 +6,11 @@ This repo hosts code when reading
 - [*The Rust Lang Book* (video)](https://www.youtube.com/playlist?list=PLai5B987bZ9CoVR-QEIN9foz4QCJ0H2Y8)
 - [*Rust语言圣经*](https://course.rs/about-book.html)
 
+## Repo Structure
+
+- [demo](./demo/) hosts codes demonstrating different aspects of Rust.
+- [project](./project/) hosts codes of some small projects.
+
 ## Environment
 
 ### Windows 10/11

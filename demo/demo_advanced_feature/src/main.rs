@@ -1,3 +1,4 @@
+mod demo_advanced_trait;
 mod demo_unsafe;
 
 fn main() {
