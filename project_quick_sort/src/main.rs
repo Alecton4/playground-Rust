@@ -41,17 +41,21 @@ fn quick_sort(arr: &mut [i32], idx_start: usize, idx_end: usize) {
 }
 
 fn test_quick_sort() {
+    // Get array length
     let mut input_line = String::new();
     io::stdin()
         .read_line(&mut input_line)
         .expect("Cannot read line!");
     let arr_len: usize = input_line.trim().parse().expect("Not an integer!");
+
+    // Generate array
     let mut arr: Vec<i32> = rand::thread_rng()
         .sample_iter(Uniform::from(1..=100))
         .take(arr_len)
         .collect(); // REF: generate random vector: https://stackoverflow.com/a/48219147
     println!("{:?}", arr);
 
+    // Sort array
     quick_sort(&mut arr, 0, arr_len - 1);
     println!("{:?}", arr);
 }
@@ -60,14 +64,15 @@ fn test_quick_sort() {
 // There are a few methods that all use unsafe code with pointer math internally.
 // For example, the function iter_mut gives you an iterator over mutable references to different elements of the slice.
 // Saving the two of those that you care about gives you the references you need.
-// Another common way is split_at_mut, which splits your slice at an index to give you two smaller slices that you can index with no problem.
+// Another common way is split_at_mut,
+// which splits your slice at an index to give you two smaller slices that you can index with no problem.
 
 // REF: https://discord.com/channels/442252698964721669/448238009733742612/1055721340335824907
 // An example using iterators (I wrote this one and it’s a little more limited because the indices must be in order)
 fn get_two_1<T>(v: &mut [T], i: usize, j: usize) -> Option<(&mut T, &mut T)> {
     let diff = j.checked_sub(i)?.checked_sub(1)?;
     let mut iter = v.iter_mut().skip(i);
-    Some((iter.next()?, iter.skip(diff).next()?))
+    Some((iter.next()?, iter.nth(diff)?))
 }
 
 // An example using split at mut (credit to orlp from the community server)
