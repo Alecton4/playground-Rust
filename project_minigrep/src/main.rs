@@ -5,7 +5,7 @@
 use std::env; // To take user args.
 use std::process; //To exit program without panic.
 
-use minigrep::{run, Config};
+use project_minigrep::{run, Config};
 
 fn main() {
     // let args: Vec<String> = env::args().collect();

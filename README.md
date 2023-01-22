@@ -8,8 +8,8 @@ This repo hosts code when reading
 
 ## Repo Structure
 
-- [demo](./demo/) hosts codes demonstrating different aspects of Rust.
-- [project](./project/) hosts codes of some small projects.
+- *demo_xxx* hosts codes demonstrating different aspects of Rust.
+- *project_xxx* hosts codes of some small projects.
 
 ## Environment
 
