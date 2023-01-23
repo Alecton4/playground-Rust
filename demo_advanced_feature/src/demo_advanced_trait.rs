@@ -1,4 +1,5 @@
 // REF: https://doc.rust-lang.org/book/ch19-03-advanced-traits.html
+
 pub fn demo_associated_type() {
     pub trait Iterator {
         // The type Item is a placeholder,
@@ -187,7 +188,7 @@ pub fn demo_supertrait() {
     Point { x: 89, y: 64 }.outline_print();
 }
 
-pub fn demo_new_type_pattern() {
+pub fn demo_newtype_pattern() {
     // TODO: review https://doc.rust-lang.org/book/ch19-03-advanced-traits.html#using-the-newtype-pattern-to-implement-external-traits-on-external-types
     use std::fmt;
 
@@ -201,4 +202,13 @@ pub fn demo_new_type_pattern() {
 
     let w = Wrapper(vec![String::from("hello"), String::from("world")]);
     println!("w = {}", w);
+
+    // The downside of using this technique is that Wrapper is a new type,
+    // so it doesn’t have the methods of the value it’s holding.
+    // We would have to implement all the methods of Vec<T> directly on Wrapper such that the methods delegate to self.0,
+    // which would allow us to treat Wrapper exactly like a Vec<T>.
+    // If we wanted the new type to have every method the inner type has,
+    // implementing the Deref trait on the Wrapper to return the inner type would be a solution.
+    // If we don’t want the Wrapper type to have all the methods of the inner type — for example,
+    // to restrict the Wrapper type’s behavior — we would have to implement just the methods we do want manually.
 }

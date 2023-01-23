@@ -1,4 +1,6 @@
+mod demo_advanced_function;
 mod demo_advanced_trait;
+mod demo_advanced_type;
 mod demo_unsafe;
 
 fn main() {
@@ -18,6 +20,12 @@ fn main() {
     demo_advanced_trait::demo_operator_overloading();
     demo_advanced_trait::demo_default_type_parameter();
     demo_advanced_trait::demo_specify_trait_before_method_call();
+    demo_advanced_trait::demo_fully_qualified_syntax();
     demo_advanced_trait::demo_supertrait();
-    demo_advanced_trait::demo_new_type_pattern();
+    demo_advanced_trait::demo_newtype_pattern();
+
+    demo_advanced_type::demo_type_alias();
+    demo_advanced_type::demo_reduce_repetition();
+    demo_advanced_type::demo_never_type();
+    demo_advanced_type::demo_dynamic_sized_type();
 }
