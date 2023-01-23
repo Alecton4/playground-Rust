@@ -34,8 +34,8 @@ fn main() {
         width: 89,
         height: 64,
     };
-    // !!! Automatic referencing and dereferencing
-    // (Calling a method on an object directly is the same as calling it on a pointer to the object)
+    // NOTE: Automatic referencing and dereferencing:
+    // Calling a method on an instance directly is the same as calling it on a pointer to the instance.
     rect.area();
 
     let rect2 = Rectangle::square(64);
