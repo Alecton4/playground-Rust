@@ -1,74 +1,10 @@
-use colored::Colorize;
-use ferris_says::say;
-use rand::Rng;
-use std::{
-    cmp::Ordering,
-    io::{stdin, stdout, BufWriter},
-};
+mod greet;
+mod guess;
 
 fn main() {
-    greet_world();
-    guess_hello();
-    guess_number();
-}
-
-fn greet_world() {
-    let southern_germany = "Grüß Gott!";
-    let chinese = "世界，你好";
-    let english = "World, hello";
-    let regions = [southern_germany, chinese, english];
-    for region in regions.iter() {
-        println!("{}", &region);
-    }
-}
-
-fn guess_hello() {
-    println!("Please input your guess.");
-
-    let mut guess = String::new();
-    stdin().read_line(&mut guess).expect("Failed to read line!");
-
-    let message = if contain_substring(&guess, "hello world") {
-        String::from("Hello fellow Rustaceans!")
-    } else {
-        String::from("You are not a Rustacean!")
-    };
-
-    let stdout = stdout();
-    let mut writer = BufWriter::new(stdout.lock());
-    let width = message.chars().count();
-
-    // !!! The BufWriter is buffering it and will only actually perform the write when it's dropped, at the very end of the function
-    say(message.as_str(), width, &mut writer).unwrap();
-    // Thus this is printed first
-    println!("Good Bye!")
-}
-
-fn guess_number() {
-    let secret_num = rand::thread_rng().gen_range(1..=2);
-    println!("The secret number is {}", secret_num);
-
-    loop {
-        println!("Please input a number!");
-
-        let mut guess = String::new();
-        stdin().read_line(&mut guess).expect("Failed to read line!");
-
-        let guess_num: u32 = match guess.trim().parse() {
-            Ok(num) => num,
-            Err(_) => continue,
-        };
-        println!("You guessed {}", guess_num);
-
-        match guess_num.cmp(&secret_num) {
-            Ordering::Less => println!("{}", "Too small!".red()),
-            Ordering::Greater => println!("{}", "Too big".red()),
-            Ordering::Equal => {
-                println!("{}", "You win!".green());
-                break;
-            }
-        }
-    }
+    greet::greet_world();
+    guess::guess_hello();
+    guess::guess_number();
 }
 
 // sort the array in descending order
