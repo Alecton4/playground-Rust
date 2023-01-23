@@ -1,6 +1,7 @@
 mod demo_advanced_function;
 mod demo_advanced_trait;
 mod demo_advanced_type;
+mod demo_macro;
 mod demo_unsafe;
 
 fn main() {
