@@ -28,4 +28,7 @@ fn main() {
     demo_advanced_type::demo_reduce_repetition();
     demo_advanced_type::demo_never_type();
     demo_advanced_type::demo_dynamic_sized_type();
+
+    demo_advanced_function::demo_function_pointer();
+    demo_advanced_function::demo_returning_closure();
 }
