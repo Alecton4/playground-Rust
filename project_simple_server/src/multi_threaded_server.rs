@@ -6,7 +6,7 @@ use std::net::{TcpListener, TcpStream};
 use std::thread;
 use std::time::Duration;
 
-use project_server::ThreadPool;
+use project_simple_server::ThreadPool;
 
 // NOTE: Write the API of the code so it’s structured in the way you want to call it;
 // then implement the functionality within that structure
