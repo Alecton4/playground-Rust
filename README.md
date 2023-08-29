@@ -15,16 +15,8 @@ This repo hosts code when reading
 
 ### Windows 10/11
 
-#### Rust Host Triple `x86_64-pc-windows-gnu`
+See [the note](https://alecton4.github.io/notes-foam/notes-OS/Windows/common/dev-env#rust).
 
-##### MSYS2
+### openSUSE Tumbleweed
 
-Install the following packages:
-
-- `mingw-w64-ucrt-x86_64-toolchain`
-- `mingw-w64-ucrt-x86_64-clang`
-- `mingw-w64-ucrt-x86_64-clang-tools-extra`
-
-##### Rustup
-
-You may want to modify environment variables `RUSTUP_HOME` and `CARGO_HOME` before installation.
+See [the note](https://alecton4.github.io/notes-foam/notes-OS/Linux/openSUSE/Tumbleweed/dev-env#rust).
