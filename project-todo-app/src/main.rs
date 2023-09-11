@@ -25,6 +25,12 @@ struct TaskUpdate<'r> {
     item: &'r str,
 }
 
+#[derive(Deserialize, Serialize)]
+#[serde(crate = "rocket::serde")]
+struct TaskId {
+    id: u8,
+}
+
 #[post("/addtask", data = "<task>")]
 fn add_task(task: Json<Task<'_>>) -> &'static str {
     let mut tasks = OpenOptions::new()
@@ -105,7 +111,47 @@ fn edit_task(task_update: Json<TaskUpdate<'_>>) -> &'static str {
     "Task updated successfully"
 }
 
+#[delete("/deletetask", data = "<task_id>")]
+fn delete_task(task_id: Json<TaskId>) -> &'static str {
+    let tasks = OpenOptions::new()
+        .read(true)
+        .append(true)
+        .create(true)
+        .open("tasks.txt")
+        .expect("Unable to access tasks.txt!!!");
+    let mut temp = OpenOptions::new()
+        .create(true)
+        .write(true)
+        .truncate(true)
+        .open("temp.txt")
+        .expect("Unable to access temp.txt!!!");
+
+    let reader = BufReader::new(tasks);
+
+    for line in reader.lines() {
+        let line_string: String = line.expect("Could not read line!!!");
+        let line_pieces: Vec<&str> = line_string.split(',').collect();
+
+        if line_pieces[0]
+            .parse::<u8>()
+            .expect("Unable to parse id as u8!!!")
+            != task_id.id
+        {
+            let task = format!("{}\n", line_string);
+            temp.write_all(task.as_bytes())
+                .expect("Could not write to temp file!!!");
+        }
+    }
+
+    std::fs::remove_file("tasks.txt").expect("Unable to remove tasks.txt!!!");
+    std::fs::rename("temp.txt", "tasks.txt").expect("Unable to rename temp.txt!!!");
+    "Task deleted successfully"
+}
+
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![index, add_task, read_tasks, edit_task])
+    rocket::build().mount(
+        "/",
+        routes![index, add_task, read_tasks, edit_task, delete_task,],
+    )
 }
