@@ -5,6 +5,12 @@
     {{ flash.1 }}
 </p>
 {% endif %}
+<form action="/addtask" method="post">
+    <div class="add_task_form">
+        <input type="text" name="item" placeholder="Enter a new task here..." />
+        <button type="submit">Add Task</button>
+    </div>
+</form>
 <table>
     <colgroup>
         <col class="medium">
@@ -34,10 +40,4 @@
     </tr>
     {% endfor %}
 </table>
-<form action="/addtask" method="post">
-    <div class="add_task_form">
-        <input type="text" name="item" placeholder="Enter a new task here..." />
-        <button type="submit">Add Task</button>
-    </div>
-</form>
 {% endblock content %}
