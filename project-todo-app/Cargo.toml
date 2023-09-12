@@ -5,17 +5,30 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[workspace]
+members = [".", "entity", "migration"]
+
 [dependencies]
+async-trait = { version = "0.1" }
+entity = { path = "entity" }
+migration = { path = "migration" }
 
 [dependencies.rocket]
 version = "0.5.0-rc.3"
 features = ["json"]
 
-[dependencies.sqlx]
-version = "0.6"
-default-features = false
-features = ["macros", "migrate", "postgres"]
+# [dependencies.sqlx]
+# version = "0.6"
+# default-features = false
+# features = ["macros", "migrate", "postgres"]
 
-[dependencies.rocket_db_pools]
-version = "=0.1.0-rc.3"
-features = ["sqlx_postgres"]
+# [dependencies.rocket_db_pools]
+# version = "=0.1.0-rc.3"
+# features = ["sqlx_postgres"]
+
+[dependencies.sea-orm-rocket]
+version = "0.5"
+
+[dependencies.sea-orm]
+version = "0.12"
+features = ["runtime-tokio-native-tls", "sqlx-postgres", "macros"]
