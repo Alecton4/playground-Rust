@@ -70,15 +70,32 @@ async fn read_tasks(conn: Connection<'_, Db>) -> Result<Json<Vec<tasks::Model>>,
 async fn edit_task(
     conn: Connection<'_, Db>,
     task_form: Form<tasks::Model>,
-) -> Result<Json<tasks::Model>, DatabaseError> {
+) -> Result<Flash<Redirect>, DatabaseError> {
     let db = conn.into_inner();
     let task = task_form.into_inner();
 
     let task_to_update = Tasks::find_by_id(task.id).one(db).await?;
     let mut task_to_update: tasks::ActiveModel = task_to_update.unwrap().into();
     task_to_update.item = Set(task.item);
+    task_to_update.update(db).await?;
 
-    Ok(Json(task_to_update.update(db).await?))
+    Ok(Flash::success(
+        Redirect::to("/"),
+        "Task edited successfully!",
+    ))
+}
+
+#[get("/edit/<id>")]
+async fn edit_task_page(conn: Connection<'_, Db>, id: i32) -> Result<Template, DatabaseError> {
+    let db = conn.into_inner();
+    let task = Tasks::find_by_id(id).one(db).await?.unwrap();
+
+    Ok(Template::render(
+        "edit_task_form",
+        json!({
+            "task": task
+        }),
+    ))
 }
 
 #[delete("/deletetask/<id>")]
@@ -88,7 +105,7 @@ async fn delete_task(conn: Connection<'_, Db>, id: i32) -> Result<Flash<Redirect
 
     Ok(Flash::success(
         Redirect::to("/"),
-        "Task succesfully deleted!",
+        "Task successfully deleted!",
     ))
 }
 
@@ -126,7 +143,14 @@ fn rocket() -> _ {
         .mount("/", FileServer::from(relative!("/public")))
         .mount(
             "/",
-            routes![index, add_task, read_tasks, edit_task, delete_task],
+            routes![
+                index,
+                add_task,
+                read_tasks,
+                edit_task,
+                edit_task_page,
+                delete_task
+            ],
         )
         .attach(Template::fairing())
 }

@@ -86,3 +86,19 @@ input {
     display: flex;
     justify-content: space-around;
 }
+
+label {
+    display: block;
+    letter-spacing: 1px;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+.item-input {
+    margin-bottom: 1.5rem;
+}
+
+.back-button {
+    margin-bottom: 4rem;
+}
