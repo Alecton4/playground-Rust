@@ -1,52 +1,94 @@
 #[macro_use]
 extern crate rocket;
 
+use rocket::http::Status;
+use rocket::response;
 use rocket::serde::json::Json;
 use rocket::serde::{Deserialize, Serialize};
+use rocket::Request;
+use rocket_db_pools::{Connection, Database};
 use std::fs::OpenOptions;
 use std::io::BufReader;
 use std::io::{BufRead, Write};
 
-#[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
+#[derive(Database)]
+#[database("todo")]
+struct TodoDatabase(sqlx::postgres::PgPool);
+
+struct DatabaseError(rocket_db_pools::sqlx::Error);
+
+impl<'r> response::Responder<'r, 'r> for DatabaseError {
+    fn respond_to(self, request: &Request) -> response::Result<'r> {
+        Err(Status::InternalServerError)
+    }
 }
+
+impl From<rocket_db_pools::sqlx::Error> for DatabaseError {
+    fn from(error: rocket_db_pools::sqlx::Error) -> Self {
+        DatabaseError(error)
+    }
+}
+
+#[derive(Deserialize, Serialize, sqlx::FromRow)]
+#[serde(crate = "rocket::serde")]
+struct Task {
+    id: i64,
+    item: String,
+}
+
+// #[derive(Deserialize, Serialize)]
+// #[serde(crate = "rocket::serde")]
+// struct TaskUpdate<'r> {
+//     id: u8,
+//     item: &'r str,
+// }
 
 #[derive(Deserialize, Serialize)]
 #[serde(crate = "rocket::serde")]
-struct Task<'r> {
-    item: &'r str,
-}
-
-#[derive(Deserialize, Serialize)]
-#[serde(crate = "rocket::serde")]
-struct TaskUpdate<'r> {
-    id: u8,
+struct TaskItem<'r> {
     item: &'r str,
 }
 
 #[derive(Deserialize, Serialize)]
 #[serde(crate = "rocket::serde")]
 struct TaskId {
-    id: u8,
+    id: i64,
 }
 
+#[get("/")]
+fn index() -> &'static str {
+    "Hello, world!"
+}
+
+// #[post("/addtask", data = "<task>")]
+// fn add_task(task: Json<Task<'_>>) -> &'static str {
+//     let mut tasks = OpenOptions::new()
+//         .read(true)
+//         .append(true)
+//         .create(true)
+//         .open("tasks.txt")
+//         .expect("Unable to access tasks.txt!!!");
+//     let reader = BufReader::new(&tasks);
+//     let id = reader.lines().count();
+//     let task_item_string = format!("{},{}\n", id, task.item);
+//     let task_item_bytes = task_item_string.as_bytes();
+//     tasks
+//         .write_all(task_item_bytes)
+//         .expect("Unable to write to tasks.txt!!!");
+//     "Task added successfully"
+// }
+
 #[post("/addtask", data = "<task>")]
-fn add_task(task: Json<Task<'_>>) -> &'static str {
-    let mut tasks = OpenOptions::new()
-        .read(true)
-        .append(true)
-        .create(true)
-        .open("tasks.txt")
-        .expect("Unable to access tasks.txt!!!");
-    let reader = BufReader::new(&tasks);
-    let id = reader.lines().count();
-    let task_item_string = format!("{},{}\n", id, task.item);
-    let task_item_bytes = task_item_string.as_bytes();
-    tasks
-        .write_all(task_item_bytes)
-        .expect("Unable to write to tasks.txt!!!");
-    "Task added successfully"
+async fn add_task(
+    task: Json<TaskItem<'_>>,
+    mut db: Connection<TodoDatabase>,
+) -> Result<Json<Task>, DatabaseError> {
+    let added_task = sqlx::query_as::<_, Task>("INSERT INTO tasks (item) VALUES ($1) RETURNING *")
+        .bind(task.item)
+        .fetch_one(&mut *db)
+        .await?;
+
+    Ok(Json(added_task))
 }
 
 #[get("/readtasks")]
@@ -150,7 +192,7 @@ fn delete_task(task_id: Json<TaskId>) -> &'static str {
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount(
+    rocket::build().attach(TodoDatabase::init()).mount(
         "/",
         routes![index, add_task, read_tasks, edit_task, delete_task,],
     )
