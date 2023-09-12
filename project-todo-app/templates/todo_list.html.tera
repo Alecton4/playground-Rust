@@ -1,5 +1,10 @@
 {% extends "base" %} {% block content %}
 <h1>Todo List</h1>
+{% if flash %}
+<p class="{{ flash.0 }}-flash">
+  {{ flash.1 }}
+</p>
+{% endif %}
 <table>
     <colgroup>
         <col class="medium">

@@ -8,7 +8,8 @@ use rocket::form::Form;
 use rocket::fs::relative;
 use rocket::fs::FileServer;
 use rocket::http::Status;
-use rocket::response::{self, Responder};
+use rocket::request::FlashMessage;
+use rocket::response::{self, Flash, Redirect, Responder};
 use rocket::serde::json::Json;
 use rocket::{Build, Request, Rocket};
 use rocket_dyn_templates::serde::json::json;
@@ -39,7 +40,7 @@ impl From<sea_orm::DbErr> for DatabaseError {
 async fn add_task(
     conn: Connection<'_, Db>,
     task_form: Form<tasks::Model>,
-) -> Result<Json<tasks::Model>, DatabaseError> {
+) -> Result<Flash<Redirect>, DatabaseError> {
     let db = conn.into_inner();
     let task = task_form.into_inner();
 
@@ -48,7 +49,9 @@ async fn add_task(
         ..Default::default()
     };
 
-    Ok(Json(active_task.insert(db).await?))
+    active_task.insert(db).await?;
+
+    Ok(Flash::success(Redirect::to("/"), "Task created!"))
 }
 
 #[get("/readtasks")]
@@ -79,20 +82,21 @@ async fn edit_task(
 }
 
 #[delete("/deletetask/<id>")]
-async fn delete_task(conn: Connection<'_, Db>, id: i32) -> Result<String, DatabaseError> {
+async fn delete_task(conn: Connection<'_, Db>, id: i32) -> Result<Flash<Redirect>, DatabaseError> {
     let db = conn.into_inner();
-    let result = Tasks::delete_by_id(id).exec(db).await?;
+    let _result = Tasks::delete_by_id(id).exec(db).await?;
 
-    Ok(format!("{} task(s) deleted", result.rows_affected))
+    Ok(Flash::success(
+        Redirect::to("/"),
+        "Task succesfully deleted!",
+    ))
 }
 
-// #[get("/")]
-// fn index() -> &'static str {
-//     "Hello, world!"
-// }
-
 #[get("/")]
-async fn index(conn: Connection<'_, Db>) -> Result<Template, DatabaseError> {
+async fn index(
+    conn: Connection<'_, Db>,
+    flash: Option<FlashMessage<'_>>,
+) -> Result<Template, DatabaseError> {
     let db = conn.into_inner();
     let tasks = Tasks::find()
         .order_by_asc(tasks::Column::Id)
@@ -102,7 +106,8 @@ async fn index(conn: Connection<'_, Db>) -> Result<Template, DatabaseError> {
     Ok(Template::render(
         "todo_list",
         json!({
-            "tasks": tasks
+            "tasks": tasks,
+            "flash": flash.map(FlashMessage::into_inner)
         }),
     ))
 }
