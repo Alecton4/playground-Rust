@@ -37,10 +37,7 @@ impl From<sea_orm::DbErr> for DatabaseError {
 }
 
 #[post("/addtask", data = "<task_form>")]
-async fn add_task(
-    conn: Connection<'_, Db>,
-    task_form: Form<tasks::Model>,
-) -> Result<Flash<Redirect>, DatabaseError> {
+async fn add_task(conn: Connection<'_, Db>, task_form: Form<tasks::Model>) -> Flash<Redirect> {
     let db = conn.into_inner();
     let task = task_form.into_inner();
 
@@ -49,9 +46,14 @@ async fn add_task(
         ..Default::default()
     };
 
-    active_task.insert(db).await?;
+    let _result = match active_task.insert(db).await {
+        Ok(result) => result,
+        Err(_) => {
+            return Flash::error(Redirect::to("/"), "Issue creating the task");
+        }
+    };
 
-    Ok(Flash::success(Redirect::to("/"), "Task created!"))
+    Flash::success(Redirect::to("/"), "Task created!")
 }
 
 #[get("/readtasks")]
@@ -67,22 +69,26 @@ async fn read_tasks(conn: Connection<'_, Db>) -> Result<Json<Vec<tasks::Model>>,
 }
 
 #[put("/edittask", data = "<task_form>")]
-async fn edit_task(
-    conn: Connection<'_, Db>,
-    task_form: Form<tasks::Model>,
-) -> Result<Flash<Redirect>, DatabaseError> {
+async fn edit_task(conn: Connection<'_, Db>, task_form: Form<tasks::Model>) -> Flash<Redirect> {
     let db = conn.into_inner();
     let task = task_form.into_inner();
 
-    let task_to_update = Tasks::find_by_id(task.id).one(db).await?;
+    let task_to_update = match Tasks::find_by_id(task.id).one(db).await {
+        Ok(result) => result,
+        Err(_) => {
+            return Flash::error(Redirect::to("/"), "Issue editing the task");
+        }
+    };
     let mut task_to_update: tasks::ActiveModel = task_to_update.unwrap().into();
     task_to_update.item = Set(task.item);
-    task_to_update.update(db).await?;
+    let _result = match task_to_update.update(db).await {
+        Ok(result) => result,
+        Err(_) => {
+            return Flash::error(Redirect::to("/"), "Issue editing the task");
+        }
+    };
 
-    Ok(Flash::success(
-        Redirect::to("/"),
-        "Task edited successfully!",
-    ))
+    Flash::success(Redirect::to("/"), "Task edited successfully!")
 }
 
 #[get("/edit/<id>")]
@@ -99,14 +105,16 @@ async fn edit_task_page(conn: Connection<'_, Db>, id: i32) -> Result<Template, D
 }
 
 #[delete("/deletetask/<id>")]
-async fn delete_task(conn: Connection<'_, Db>, id: i32) -> Result<Flash<Redirect>, DatabaseError> {
+async fn delete_task(conn: Connection<'_, Db>, id: i32) -> Flash<Redirect> {
     let db = conn.into_inner();
-    let _result = Tasks::delete_by_id(id).exec(db).await?;
+    let _result = match Tasks::delete_by_id(id).exec(db).await {
+        Ok(value) => value,
+        Err(_) => {
+            return Flash::error(Redirect::to("/"), "Issue deleting the task");
+        }
+    };
 
-    Ok(Flash::success(
-        Redirect::to("/"),
-        "Task successfully deleted!",
-    ))
+    Flash::success(Redirect::to("/"), "Task successfully deleted!")
 }
 
 #[get("/")]
