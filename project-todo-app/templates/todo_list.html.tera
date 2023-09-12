@@ -1,0 +1,36 @@
+{% extends "base" %} {% block content %}
+<h1>Todo List</h1>
+<table>
+    <colgroup>
+        <col class="medium">
+        <col class="wide">
+        <col class="medium">
+    </colgroup>
+    <tr>
+        <th>ID</th>
+        <th>Item</th>
+        <th>Actions</th>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+        <td>{{ task.id }}</td>
+        <td class="item">{{ task.item }}</td>
+        <td >
+            <div class="actions">
+                <button>Edit</button>
+                <form action="/deletetask/{{ task.id }}" method="post">
+                    <input type="hidden" name="_method" value="delete" />
+                    <button type="submit">Delete</button>bmit">Delete</button>
+                </form>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<form action="/addtask" method="post">
+    <div class="add_task_form">
+        <input type="text" name="item" placeholder="Enter a new task here..." />
+        <button type="submit">Add Task</button>
+    </div>
+</form>
+{% endblock content %}

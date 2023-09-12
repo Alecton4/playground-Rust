@@ -5,10 +5,14 @@ mod pool;
 
 use rocket::fairing::{self, AdHoc};
 use rocket::form::Form;
+use rocket::fs::relative;
+use rocket::fs::FileServer;
 use rocket::http::Status;
 use rocket::response::{self, Responder};
 use rocket::serde::json::Json;
 use rocket::{Build, Request, Rocket};
+use rocket_dyn_templates::serde::json::json;
+use rocket_dyn_templates::Template;
 use sea_orm::{ActiveModelTrait, DeleteResult, EntityTrait, QueryOrder, Set};
 use sea_orm_rocket::{Connection, Database};
 
@@ -82,9 +86,25 @@ async fn delete_task(conn: Connection<'_, Db>, id: i32) -> Result<String, Databa
     Ok(format!("{} task(s) deleted", result.rows_affected))
 }
 
+// #[get("/")]
+// fn index() -> &'static str {
+//     "Hello, world!"
+// }
+
 #[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
+async fn index(conn: Connection<'_, Db>) -> Result<Template, DatabaseError> {
+    let db = conn.into_inner();
+    let tasks = Tasks::find()
+        .order_by_asc(tasks::Column::Id)
+        .all(db)
+        .await?;
+
+    Ok(Template::render(
+        "todo_list",
+        json!({
+            "tasks": tasks
+        }),
+    ))
 }
 
 async fn run_migrations(rocket: Rocket<Build>) -> fairing::Result {
@@ -98,8 +118,10 @@ fn rocket() -> _ {
     rocket::build()
         .attach(Db::init())
         .attach(AdHoc::try_on_ignite("Migrations", run_migrations))
+        .mount("/", FileServer::from(relative!("/public")))
         .mount(
             "/",
             routes![index, add_task, read_tasks, edit_task, delete_task],
         )
+        .attach(Template::fairing())
 }
