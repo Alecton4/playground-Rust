@@ -121,8 +121,8 @@ async fn delete_task(conn: Connection<'_, Db>, id: i32) -> Flash<Redirect> {
 async fn index(
     conn: Connection<'_, Db>,
     flash: Option<FlashMessage<'_>>,
-    page: Option<usize>,
-    tasks_per_page: Option<usize>,
+    page: Option<u64>,
+    tasks_per_page: Option<u64>,
 ) -> Result<Template, DatabaseError> {
     let db = conn.into_inner();
     let page = page.unwrap_or(0);
@@ -130,9 +130,9 @@ async fn index(
 
     let paginator = Tasks::find()
         .order_by_asc(tasks::Column::Id)
-        .paginate(db, tasks_per_page as u64);
+        .paginate(db, tasks_per_page);
     let number_of_pages = paginator.num_pages().await?;
-    let tasks = paginator.fetch_page(page as u64).await?;
+    let tasks = paginator.fetch_page(page).await?;
 
     Ok(Template::render(
         "todo_list",
