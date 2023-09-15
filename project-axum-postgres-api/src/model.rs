@@ -1,10 +1,9 @@
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
-use uuid::Uuid;
 
 #[derive(Debug, FromRow, Deserialize, Serialize)]
 pub struct NoteModel {
-    pub id: Uuid,
+    pub id: uuid::Uuid,
     pub title: String,
     pub content: String,
     pub category: Option<String>,
