@@ -14,15 +14,6 @@ pub struct AppState {
     db: Pool<Postgres>,
 }
 
-async fn health_check_handler() -> impl IntoResponse {
-    const MESSAGE: &str = "Simple CRUD API with Rust, SQLX, Postgres,and Axum";
-    let json_response = serde_json::json!({
-        "status": "success",
-        "message": MESSAGE,
-    });
-    Json(json_response)
-}
-
 #[tokio::main]
 async fn main() {
     dotenv().ok();
@@ -44,7 +35,7 @@ async fn main() {
     };
     let app_state = Arc::new(AppState { db: pool.clone() });
     let app = Router::new()
-        .route("/api/healthchecker", get(health_check_handler))
+        .route("/api/healthchecker", get(handler::health_check_handler))
         .with_state(app_state);
     println!("🚀 Server started successfully");
 

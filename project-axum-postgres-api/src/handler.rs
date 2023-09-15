@@ -8,6 +8,15 @@ use crate::model::NoteModel;
 use crate::schema::{CreateNoteSchema, FilterOptions, UpdateNoteSchema};
 use crate::AppState;
 
+pub async fn health_check_handler() -> impl IntoResponse {
+    const MESSAGE: &str = "Simple CRUD API with Rust, SQLX, Postgres,and Axum";
+    let json_response = serde_json::json!({
+        "status": "success",
+        "message": MESSAGE,
+    });
+    Json(json_response)
+}
+
 pub async fn create_one_handler(
     State(data): State<Arc<AppState>>,
     Json(body): Json<CreateNoteSchema>,
