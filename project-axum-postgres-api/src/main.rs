@@ -6,6 +6,10 @@ use sqlx::postgres::PgPoolOptions;
 use sqlx::{Pool, Postgres};
 use std::sync::Arc;
 
+mod handler;
+mod model;
+mod schema;
+
 pub struct AppState {
     db: Pool<Postgres>,
 }
