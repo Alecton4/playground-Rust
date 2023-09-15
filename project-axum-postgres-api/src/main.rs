@@ -1,6 +1,5 @@
-use axum::response::IntoResponse;
 use axum::routing::get;
-use axum::{Json, Router};
+use axum::Router;
 use dotenv::dotenv;
 use sqlx::postgres::PgPoolOptions;
 use sqlx::{Pool, Postgres};
@@ -8,6 +7,7 @@ use std::sync::Arc;
 
 mod handler;
 mod model;
+mod route;
 mod schema;
 
 pub struct AppState {
