@@ -55,10 +55,11 @@ pub async fn create_one_handler(
                         "message": "Note with that title already exists!"
                     }
                 );
-
+                println!("❌ Returning error response...");
                 return Err((StatusCode::CONFLICT, Json(error_response)));
             }
 
+            println!("❌ Returning error response...");
             Err((
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(serde_json::json!(
@@ -95,6 +96,7 @@ pub async fn read_all_handler(
                 "message": "Something went wrong while fetching all notes!"
             }
         );
+        println!("❌ Returning error response...");
         return Err((StatusCode::INTERNAL_SERVER_ERROR, Json(error_response)));
     }
 
@@ -138,6 +140,7 @@ pub async fn read_one_handler(
                     "message": format!("Note with id {} not found!", id)
                 }
             );
+            println!("❌ Returning error response...");
             Err((StatusCode::NOT_FOUND, Json(error_response)))
         }
     }
@@ -159,6 +162,7 @@ pub async fn update_one_handler(
                 "message": format!("Note with id {} not found!", id)
             }
         );
+        println!("❌ Returning error response...");
         return Err((StatusCode::NOT_FOUND, Json(error_response)));
     }
 
@@ -189,15 +193,18 @@ pub async fn update_one_handler(
             );
             Ok(Json(note_response))
         }
-        Err(e) => Err((
-            StatusCode::INTERNAL_SERVER_ERROR,
-            Json(serde_json::json!(
-                {
-                    "status": "error",
-                    "message": format!("{:?}", e)
-                }
-            )),
-        )),
+        Err(e) => {
+            println!("❌ Returning error response...");
+            Err((
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(serde_json::json!(
+                    {
+                        "status": "error",
+                        "message": format!("{:?}", e)
+                    }
+                )),
+            ))
+        }
     }
 }
 
@@ -218,6 +225,7 @@ pub async fn delete_one_handler(
                 "message": format!("Note with id {} not found!", id)
             }
         );
+        println!("❌ Returning error response...");
         return Err((StatusCode::NOT_FOUND, Json(error_response)));
     }
 
