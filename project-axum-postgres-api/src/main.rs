@@ -16,12 +16,10 @@ pub struct AppState {
 
 async fn health_check_handler() -> impl IntoResponse {
     const MESSAGE: &str = "Simple CRUD API with Rust, SQLX, Postgres,and Axum";
-
     let json_response = serde_json::json!({
         "status": "success",
         "message": MESSAGE,
     });
-
     Json(json_response)
 }
 
@@ -44,13 +42,12 @@ async fn main() {
             std::process::exit(1);
         }
     };
-
     let app_state = Arc::new(AppState { db: pool.clone() });
     let app = Router::new()
         .route("/api/healthchecker", get(health_check_handler))
         .with_state(app_state);
-
     println!("🚀 Server started successfully");
+
     axum::Server::bind(&"0.0.0.0:8000".parse().unwrap())
         .serve(app.into_make_service())
         .await

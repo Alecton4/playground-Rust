@@ -2,14 +2,13 @@ use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
 use axum::response::IntoResponse;
 use axum::Json;
-use serde_json::json;
 use std::sync::Arc;
 
 use crate::model::NoteModel;
 use crate::schema::{CreateNoteSchema, FilterOptions, UpdateNoteSchema};
 use crate::AppState;
 
-pub async fn note_list_handler(
+pub async fn read_notes_handler(
     opts: Option<Query<FilterOptions>>,
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
@@ -44,4 +43,59 @@ pub async fn note_list_handler(
         }
     );
     Ok(Json(json_response))
+}
+
+pub async fn create_note_handler(
+    State(data): State<Arc<AppState>>,
+    Json(body): Json<CreateNoteSchema>,
+) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+    let query_result = sqlx::query_as!(
+        NoteModel,
+        "INSERT INTO notes (title, content, category) VALUES ($1, $2, $3) RETURNING *",
+        body.title.to_string(),
+        body.content.to_string(),
+        body.category.to_owned().unwrap_or("".to_string())
+    )
+    .fetch_one(&data.db)
+    .await;
+
+    match query_result {
+        Ok(note) => {
+            let json_response = serde_json::json!(
+                {
+                    "status": "success",
+                    "data": serde_json::json!(
+                        {
+                            "note": note
+                        }
+                    )
+                }
+            );
+            Ok((StatusCode::CREATED, Json(json_response)))
+        }
+        Err(e) => {
+            if e.to_string()
+                .contains("duplicate key value violates unique constraint")
+            {
+                let error_response = serde_json::json!(
+                    {
+                        "status": "fail",
+                        "message": "Note with that title already exists!"
+                    }
+                );
+
+                return Err((StatusCode::CONFLICT, Json(error_response)));
+            }
+
+            Err((
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(serde_json::json!(
+                    {
+                        "status": "error",
+                        "message": format!("{:?}", e)
+                    }
+                )),
+            ))
+        }
+    }
 }
