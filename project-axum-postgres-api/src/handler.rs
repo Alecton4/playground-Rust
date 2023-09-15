@@ -191,3 +191,26 @@ pub async fn update_one_handler(
         )),
     }
 }
+
+pub async fn delete_one_handler(
+    State(data): State<Arc<AppState>>,
+    Path(id): Path<uuid::Uuid>,
+) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
+    let rows_affected = sqlx::query!("DELETE FROM notes WHERE id = $1", id)
+        .execute(&data.db)
+        .await
+        .unwrap()
+        .rows_affected();
+
+    if rows_affected == 0 {
+        let error_response = serde_json::json!(
+            {
+                "status": "fail",
+                "message": format!("Note with id {} not found!", id)
+            }
+        );
+        return Err((StatusCode::NOT_FOUND, Json(error_response)));
+    }
+
+    Ok(StatusCode::NO_CONTENT)
+}
