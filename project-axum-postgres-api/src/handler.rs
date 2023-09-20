@@ -78,8 +78,9 @@ pub async fn read_all_handler(
     opts: Option<Query<FilterOptions>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     let Query(opts) = opts.unwrap_or_default();
+    let page = opts.page.unwrap_or(1);
     let limit = opts.limit.unwrap_or(10);
-    let offset = (opts.page.unwrap_or(1) - 1) * limit;
+    let offset = (page - 1) * limit;
     let query_result = sqlx::query_as!(
         NoteModel,
         "SELECT * FROM notes ORDER by id LIMIT $1 OFFSET $2",
