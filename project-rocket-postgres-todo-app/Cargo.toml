@@ -1,5 +1,5 @@
 [package]
-name = "project-todo-app"
+name = "project-rocket-postgres-todo-app"
 version = "0.1.0"
 edition = "2021"
 
