@@ -1,5 +1,5 @@
 [package]
-name = "project_quick_sort"
+name = "project-quick-sort"
 version = "0.1.0"
 edition = "2021"
 

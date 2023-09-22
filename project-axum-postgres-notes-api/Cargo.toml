@@ -1,5 +1,5 @@
 [package]
-name = "project-axum-postgres-api"
+name = "project-axum-postgres-notes-api"
 version = "0.1.0"
 edition = "2021"
 

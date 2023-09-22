@@ -1,11 +1,15 @@
 [package]
-name = "project_hello_world"
+name = "project-minigrep"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-colored = { version = "2" }
-ferris-says = { version = "0.3" }
-rand = { version = "0.8" }
+
+# REF: https://www.youtube.com/watch?v=4TI153PIEDQ
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 3
