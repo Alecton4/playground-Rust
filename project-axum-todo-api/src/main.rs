@@ -2,6 +2,8 @@ use axum::response::IntoResponse;
 use axum::routing::get;
 
 mod model;
+mod response;
+mod schema;
 
 async fn health_checker_handler() -> impl IntoResponse {
     const MESSAGE: &str = "API is up and running!";
