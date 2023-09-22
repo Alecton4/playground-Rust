@@ -1,6 +1,8 @@
 use axum::response::IntoResponse;
 use axum::routing::get;
 
+mod model;
+
 async fn health_checker_handler() -> impl IntoResponse {
     const MESSAGE: &str = "API is up and running!";
     let json_response = serde_json::json!(
